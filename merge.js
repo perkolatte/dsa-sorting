@@ -1,4 +1,4 @@
-// Also copies rest of remaining array after one is exhausted in one chunk instead of iterating
+// Optimized with prealloated space + manually tracks sorted array index
 function merge(arr1, arr2) {
   const length1 = arr1.length;
   const length2 = arr2.length;
@@ -15,41 +15,15 @@ function merge(arr1, arr2) {
     // and then increments the index for the sorted array with [k++].
   }
 
-  if (i < length1) sortedArr.splice(k, length1 - i, ...arr1.slice(i));
-  //
-
-  if (j < length2) sortedArr.splice(k, length2 - j, ...arr2.slice(j));
-
-  // console.log("🚀 ~ added remaining ~ sortedArr:", sortedArr);
+  // Add remaining elements to end of sorted array after one input array is exhausted
+  while (i < length1) sortedArr[k++] = arr1[i++];
+  while (j < length2) sortedArr[k++] = arr2[j++];
 
   return sortedArr;
 }
 
-function mergeSort(arr) {
-  // 1. Break up the array into halves until arrays are 0 or 1 elements in length (inherently sorted) (recursive)
-  // 2. Merge with other sorted arrays (recursive) ( use merge() )
-  // 3. Return the merged (and sorted!) array
-
-  //   mergeSort(arrSegment);
-  //   merge();
-
-  const length = arr.length;
-
-  // Arrays with 1 or 0 elements are already sorted
-  if (length <= 1) return arr;
-
-  // Find half length of array, accounting for odd lengths
-  const half = Math.floor(length / 2);
-
-  // Split array
-  const split1 = mergeSort(arr.slice(0, half));
-  const split2 = mergeSort(arr.slice(half));
-
-  // Compare, sort, return
-  return merge(split1, split2);
-}
-
-// Optimized with prealloated space + manually tracks sorted array index
+// Also copies rest of remaining array after one is exhausted in one chunk instead of iterating
+// No longer using, as while loops are apparently faster
 // function merge(arr1, arr2) {
 //   const length1 = arr1.length;
 //   const length2 = arr2.length;
@@ -66,14 +40,36 @@ function mergeSort(arr) {
 //     // and then increments the index for the sorted array with [k++].
 //   }
 
-//   while (i < length1) sortedArr[k++] = arr1[i++];
+//   if (i < length1) sortedArr.splice(k, length1 - i, ...arr1.slice(i));
 
-//   while (j < length2) sortedArr[k++] = arr2[j++];
+//   if (j < length2) sortedArr.splice(k, length2 - j, ...arr2.slice(j));
 
 //   // console.log("🚀 ~ added remaining ~ sortedArr:", sortedArr);
 
 //   return sortedArr;
 // }
+
+function mergeSort(arr) {
+  // 1. Break up the array into halves until arrays are 0 or 1 elements in length (inherently sorted) (recursive)
+  // 2. Merge with other sorted arrays (recursive) ( use merge() )
+  // 3. Return the merged (and sorted!) array
+
+  // Store length for easier access and readability
+  const length = arr.length;
+
+  // Arrays with 1 or 0 elements need not be split and are already sorted and ready for merging
+  if (length <= 1) return arr;
+
+  // Find half length of array, accounting for odd lengths
+  const midPoint = Math.floor(length / 2);
+
+  // Split array, recursively pass to self
+  const split1 = mergeSort(arr.slice(0, midPoint));
+  const split2 = mergeSort(arr.slice(midPoint));
+
+  // Compare, sort, return
+  return merge(split1, split2);
+}
 
 // function mergeSort(arr) {}
 
