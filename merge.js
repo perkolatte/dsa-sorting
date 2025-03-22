@@ -12,7 +12,7 @@ function merge(arr1, arr2) {
     sortedArr[k++] = arr1[i] < arr2[j] ? arr1[i++] : arr2[j++];
     // Adds the smaller number to the sorted array at index [k],
     // increments the index for the array it came from appropriately,
-    // and then increments the index for the sorted array with [k++].
+    // and then increments the index for the sorted array with [k++]
   }
 
   // Add remaining elements to end of sorted array after one input array is exhausted
