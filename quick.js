@@ -13,10 +13,10 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
   const arrayLength = arr.length;
 
   // Throw error if optional indices are out of bounds or incompatible
-  if (startingIndex < 0 || startingIndex >= arr.length) {
+  if (startingIndex < 0 || startingIndex >= arrayLength) {
     throw new Error("Invalid startingIndex: " + startingIndex);
   }
-  if (endingIndex < 0 || endingIndex >= arr.length) {
+  if (endingIndex < 0 || endingIndex >= arrayLength) {
     throw new Error("Invalid endingIndex: " + endingIndex);
   }
   if (endingIndex < startingIndex) {
@@ -33,7 +33,7 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
   const workinglength = endingIndex - startingIndex + 1;
 
   // If array is empty or contains only 1 element, it is already sorted. Just return.
-  if (workinglength <= 1) return 0;
+  if (workinglength <= 1) return startingIndex;
 
   // Store pivot value and index for clarity
   const pivotValue = arr[startingIndex];
@@ -43,18 +43,19 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
   let partitionIndex = startingIndex + 1;
 
   // Move through array to examine each value and determine its relation to pivot value
-  for (let i = startingIndex + 1; i <= endingIndex; i++) {
-    // Store current element for clearity and to reduce array access
+  for (let i = startingIndex + 1; i <= endingIndex; ++i) {
+    // Store current element and index for clarity and to reduce array access
     const currentValue = arr[i];
+    const currentIndex = i;
 
     // Check if current value is lower than pivot value
     if (currentValue < pivotValue) {
       // If lower, swap current with partition index
-      arr[i] = arr[partitionIndex];
+      arr[currentIndex] = arr[partitionIndex];
       arr[partitionIndex] = currentValue;
 
       // Then move partition index up by one accordingly
-      partitionIndex++;
+      ++partitionIndex;
     }
   }
 
