@@ -70,7 +70,7 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
   return pivotIndex;
 }
 
-// First working pivot attempValuet:
+// First working pivot attempt:
 // function pivot(arr) {
 //   console.log("START:\n", arr);
 //   const length = arr.length;
@@ -83,22 +83,13 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
 //   for (let i = 1; i < length; i++) {
 //     const current = arr[i];
 //     if (current < pivot) {
-//       //     "Less than pivot:\ncurrent:",
-//       //     current,
-//       //     "\n",
-//       //     arr,
-//       //     "\n(more)pivot:",
-//       //     pivot,
-//       //     "\n(more)pivotIndex:",
-//       //     pivotIndex
-//       //   );
 
 //       const tempValue = arr[i];
 //       arr[i] = arr[pivotIndex + 1];
 //       arr[pivotIndex + 1] = pivot;
 //       pivotIndex++;
 //       arr[pivotIndex - 1] = tempValue;
-//       //   console.log("Moved:\ncurrent:", current, "\n", arr);
+
 //     } else {
 //       if (i !== pivotIndex + 1) {
 //         const tempValue = arr[i];
@@ -114,8 +105,24 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
 quickSort accepts an array, left index, and right index
 */
 
-function quickSort(arr) {
-  pivot(arr);
+function quickSort(arr, leftIndex = 0, rightIndex = arr.length - 1) {
+  // Throw error if optional indices are out of bounds or incompatible
+  const arrayLength = arr.length;
+
+  console.log("Start arr:", arr);
+  if (rightIndex - leftIndex <= 0) {
+    return arr;
+  } else {
+    let partitionIndex = pivot(arr, leftIndex, rightIndex);
+    console.log("after pivot, arr:", arr);
+
+    quickSort(arr, leftIndex, partitionIndex - 1);
+    console.log("after left, arr:", arr);
+    quickSort(arr, partitionIndex + 1, rightIndex);
+    console.log("after right, arr:", arr);
+
+    return arr;
+  }
 }
 
 module.exports = {
