@@ -30,10 +30,10 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
   }
 
   // Determine array size to be organized, based on optional index inputs
-  const workinglength = endingIndex - startingIndex + 1;
+  const workingLength = endingIndex - startingIndex + 1;
 
   // If array is empty or contains only 1 element, it is already sorted. Just return.
-  if (workinglength <= 1) return startingIndex;
+  if (workingLength <= 1) return startingIndex;
 
   // Store pivot value and index for clarity
   const pivotValue = arr[startingIndex];
@@ -48,13 +48,12 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
     const currentValue = arr[i];
     const currentIndex = i;
 
-    // Check if current value is lower than pivot value
+    // If current value is lower than pivot value, swap with partition index
     if (currentValue < pivotValue) {
-      // If lower, swap current with partition index
       arr[currentIndex] = arr[partitionIndex];
       arr[partitionIndex] = currentValue;
 
-      // Then move partition index up by one accordingly
+      // Advance partition index
       ++partitionIndex;
     }
   }
@@ -66,8 +65,39 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
   // Set pivot index just below/before partition index
   pivotIndex = partitionIndex - 1;
 
-  // Return pivot index
   return pivotIndex;
+}
+
+/*
+quickSort accepts an array, left index, and right index
+*/
+
+// Implementation of in-place QuickSort with customizable pivot and index bounds
+// Optimized:
+// Implemented logic to sort smaller subarray recusively first
+// and then larger subarray iteratively with while loop
+// This keeps the call stack for the larger subarray minimized
+function quickSort(arr, leftIndex = 0, rightIndex = arr.length - 1) {
+  // Base case: subarray has zero or one element; already sorted
+  while (leftIndex < rightIndex) {
+    // Call pivot to sort array or array segment in place and save returned pivot index
+    const partitionIndex = pivot(arr, leftIndex, rightIndex);
+
+    // Determined smaller array segment to be sorted recursively
+    if (partitionIndex - leftIndex < rightIndex - partitionIndex) {
+      // Recursively sort left partition (elements before pivot)
+      quickSort(arr, leftIndex, partitionIndex - 1);
+      // Set left boundary for larger, right subarray to be sorted iterativelty within while loop
+      leftIndex = partitionIndex + 1;
+    } else {
+      // Recursively sort right partition (elements after pivot)
+      quickSort(arr, partitionIndex + 1, rightIndex);
+      // Set right boundary for larger, left subarray to be sorted iterativelty within while loop
+      rightIndex = partitionIndex - 1;
+    }
+  }
+  // Return sorted array
+  return arr;
 }
 
 // First working pivot attempt:
@@ -101,29 +131,26 @@ function pivot(arr, startingIndex = 0, endingIndex = arr.length - 1) {
 //   return pivotIndex;
 // }
 
-/*
-quickSort accepts an array, left index, and right index
-*/
+// First working quickSort()
+// Implementation of in-place QuickSort with customizable pivot and index bounds
+// function quickSort(arr, leftIndex = 0, rightIndex = arr.length - 1) {
+//   // Base case: subarray has zero or one element; already sorted
+//   if (rightIndex - leftIndex <= 0) {
+//     return arr;
+//   } else {
+//     // Call pivot to sort array or array segment in place and save returned pivot index
+//     let partitionIndex = pivot(arr, leftIndex, rightIndex);
 
-function quickSort(arr, leftIndex = 0, rightIndex = arr.length - 1) {
-  // Throw error if optional indices are out of bounds or incompatible
-  const arrayLength = arr.length;
+//     // Recursively sort left partition (elements before pivot)
+//     quickSort(arr, leftIndex, partitionIndex - 1);
 
-  console.log("Start arr:", arr);
-  if (rightIndex - leftIndex <= 0) {
-    return arr;
-  } else {
-    let partitionIndex = pivot(arr, leftIndex, rightIndex);
-    console.log("after pivot, arr:", arr);
+//     // Recursively sort right partition (elements after pivot)
+//     quickSort(arr, partitionIndex + 1, rightIndex);
 
-    quickSort(arr, leftIndex, partitionIndex - 1);
-    console.log("after left, arr:", arr);
-    quickSort(arr, partitionIndex + 1, rightIndex);
-    console.log("after right, arr:", arr);
-
-    return arr;
-  }
-}
+//     // Return sorted array
+//     return arr;
+//   }
+// }
 
 module.exports = {
   pivot: pivot,
