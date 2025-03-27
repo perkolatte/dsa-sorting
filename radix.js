@@ -1,10 +1,13 @@
 // First attempt
+// Place is 0-indexed from right
 function getDigit(number, place) {
+  // Convert number to string for ease of accessing digit at given index
   const string = number.toString();
-  console.log("🚀 ~ getDigit ~ string:", string);
 
-  console.log("🚀 ~ getDigit:", string[string.length - 1 - place]);
-  return Number(string[string.length - 1 - place]);
+  // Find number of digits, minus one to account for string 0 indexing
+  // Minus place to get correct digit index, then access index in string
+  // Convert to number and return
+  return Number(string[digitCount(number) - 1 - place]);
 }
 
 getDigit(20398, 4);
