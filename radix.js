@@ -53,7 +53,24 @@ function digitCount(number) {
 //   return digits;
 // }
 
-function mostDigits(arr) {}
+function mostDigits(arr) {
+  const arrayLength = arr.length;
+  if (arrayLength === 0) return 0;
+
+  let mostDigits = -Infinity;
+  let mostDigitsIndex = -1;
+
+  for (let i = 0; i < arrayLength; ++i) {
+    const numDigits = digitCount(arr[i]);
+    if (numDigits > mostDigits) {
+      mostDigits = numDigits;
+      mostDigitsIndex = i;
+    }
+  }
+  return mostDigits;
+}
+
+console.log(mostDigits([120394, 230, 5988, 3094]));
 
 function radixSort(arr) {
   //   console.log("arr:", arr);
