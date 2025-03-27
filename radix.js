@@ -1,3 +1,15 @@
+// Place is 0-indexed from right
+// Optimized:
+// function getDigit(number, place) {
+//   // Convert number to string for ease of accessing digit at given index
+//   const string = number.toString();
+
+//   // Find number of digits, minus one to account for string 0 indexing
+//   // Minus place to get correct digit index, then access index in string
+//   // Convert to number and return
+//   return Number(string[digitCount(number) - 1 - place]);
+// }
+
 // First attempt
 // Place is 0-indexed from right
 function getDigit(number, place) {
@@ -5,12 +17,14 @@ function getDigit(number, place) {
   const string = number.toString();
 
   // Find number of digits, minus one to account for string 0 indexing
-  // Minus place to get correct digit index, then access index in string
-  // Convert to number and return
-  return Number(string[digitCount(number) - 1 - place]);
-}
+  // Minus place to get correct digit index, then
+  const digitIndex = digitCount(number) - 1 - place;
 
-getDigit(20398, 4);
+  // Edge case: Place requested does not exist. Just return 0.
+  if (digitIndex < 0) return 0;
+  // Access index in string, convert to number
+  return Number(string[digitIndex]);
+}
 
 // Optimized:
 // Uses built-in math functions to compute in constant time O(1)
@@ -43,9 +57,10 @@ function mostDigits(arr) {}
 function radixSort(arr) {
   console.log("arr:", arr);
   let place = 10;
+  let digit = 0;
 
   for (const number of arr) {
-    for (let digit = 0; digit === 0; ) {
+    for (; digit === 0; ) {
       digit = number % place;
       console.log("digit:", digit);
 
