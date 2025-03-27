@@ -4,7 +4,7 @@ function getDigit(number, place) {
   console.log("🚀 ~ getDigit ~ string:", string);
 
   console.log("🚀 ~ getDigit:", string[string.length - 1 - place]);
-  return string[string.length - 1 - place];
+  return Number(string[string.length - 1 - place]);
 }
 
 getDigit(20398, 4);
