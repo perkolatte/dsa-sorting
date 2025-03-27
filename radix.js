@@ -1,20 +1,32 @@
 function getDigit(number, place) {}
 
-// First working attempt
+// Optimized:
+// Uses built-in math functions to compute in constant time O(1)
 function digitCount(number) {
-  let temp = number;
-  let digits = 1;
-  while (temp >= 10) {
-    temp = Math.floor(temp / 10);
-    console.log("🚀 ~ digitCount ~ temp:", temp);
-    ++digits;
-  }
+  // Edge case: Math.log10(0) returns negative Infinity, so just return digit count of 1
+  if (number === 0) return 1;
 
-  console.log("🚀 ~ digitCount ~ digits:", digits);
-  return digits;
+  // Edge case: Math.log10() returns NaN for negative numbers, so convert to positive/absolute
+  // Calculate log of number to base 10 (10^x = number)
+  // Add 1 to get digit count and return
+  return Math.floor(Math.log10(Math.abs(number))) + 1;
 }
 
-digitCount(-1);
+// First working attempt O(log10 n)
+// function digitCount(number) {
+//   let temp = number;
+//   let digits = 1;
+//   while (temp >= 10) {
+//     temp = Math.floor(temp / 10);
+//     console.log("🚀 ~ digitCount ~ temp:", temp);
+//     ++digits;
+//   }
+
+//   console.log("🚀 ~ digitCount ~ digits:", digits);
+//   return digits;
+// }
+
+digitCount(0);
 
 function mostDigits(arr) {}
 
