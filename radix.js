@@ -54,19 +54,25 @@ function digitCount(number) {
 // }
 
 function mostDigits(arr) {
+  // Save array length to minimize property access
   const arrayLength = arr.length;
+
+  //Edge case: Empty array
   if (arrayLength === 0) return 0;
 
+  // Set starting value for tracking most digits in a number
   let mostDigits = -Infinity;
-  let mostDigitsIndex = -1;
 
-  for (let i = 0; i < arrayLength; ++i) {
-    const numDigits = digitCount(arr[i]);
+  for (const number of arr) {
+    // Find digit count for current number and save to minimize function calls
+    const numDigits = digitCount(number);
+
+    // If number has more digits than previous high value, update
     if (numDigits > mostDigits) {
       mostDigits = numDigits;
-      mostDigitsIndex = i;
     }
   }
+
   return mostDigits;
 }
 
