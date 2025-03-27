@@ -1,4 +1,13 @@
-function getDigit(number, place) {}
+// First attempt
+function getDigit(number, place) {
+  const string = number.toString();
+  console.log("🚀 ~ getDigit ~ string:", string);
+
+  console.log("🚀 ~ getDigit:", string[string.length - 1 - place]);
+  return string[string.length - 1 - place];
+}
+
+getDigit(20398, 4);
 
 // Optimized:
 // Uses built-in math functions to compute in constant time O(1)
@@ -25,8 +34,6 @@ function digitCount(number) {
 //   console.log("🚀 ~ digitCount ~ digits:", digits);
 //   return digits;
 // }
-
-digitCount(0);
 
 function mostDigits(arr) {}
 
