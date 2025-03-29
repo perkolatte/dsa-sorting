@@ -53,6 +53,8 @@ function digitCount(number) {
 //   return digits;
 // }
 
+// First working attempt
+// No further optimization needed, O(n)
 function mostDigits(arr) {
   // Save array length to minimize property access
   const arrayLength = arr.length;
@@ -61,7 +63,7 @@ function mostDigits(arr) {
   if (arrayLength === 0) return 0;
 
   // Set starting value for tracking most digits in a number
-  let mostDigits = -Infinity;
+  let mostDigits = 0;
 
   for (const number of arr) {
     // Find digit count for current number and save to minimize function calls
@@ -76,23 +78,38 @@ function mostDigits(arr) {
   return mostDigits;
 }
 
-console.log(mostDigits([120394, 230, 5988, 3094]));
-
+// First working attempt
+//
 function radixSort(arr) {
-  //   console.log("arr:", arr);
-  let place = 10;
-  let digit = 0;
+  const arrayLength = arr.length;
+  const mostDigitsValue = mostDigits(arr);
+  let currentDigit = 0;
 
-  for (const number of arr) {
-    for (; digit === 0; ) {
-      digit = number % place;
-      //   console.log("digit:", digit);
+  while (currentDigit < mostDigitsValue) {
+    let nextArrayPosition = 0;
+    const buckets = new Map();
 
-      place *= 10;
+    for (const number of arr) {
+      const digitToBeSorted = getDigit(number, currentDigit);
+      if (!buckets.has(digitToBeSorted)) {
+        buckets.set(digitToBeSorted, [number]);
+      } else {
+        const numbersArray = buckets.get(digitToBeSorted);
+        numbersArray.push(number);
+      }
     }
-    digit * 10;
-    // console.log("digit:", digit);
+    for (let i = 0; i <= 9; ++i) {
+      if (buckets.has(i)) {
+        const numbersArray = buckets.get(i);
+        for (const numberValue of numbersArray) {
+          arr[nextArrayPosition] = numberValue;
+          ++nextArrayPosition;
+        }
+      }
+    }
+    ++currentDigit;
   }
+  return arr;
 }
 
 module.exports = {
