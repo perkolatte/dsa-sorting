@@ -30,7 +30,7 @@ function getDigit(number, place) {
 // Optimized:
 // Uses built-in Math functions to compute in constant time O(1)
 function digitCount(number) {
-  // Edge case: Math.log10(0) returns negative Infinity, so just return digit count of 1
+  // Edge case: Math.log10(0) returns negative Infini cty, so just return digit count of 1
   if (number === 0) return 1;
 
   // Math.log10() returns NaN for negative numbers, so convert to positive/absolute
@@ -80,30 +80,63 @@ function mostDigits(arr) {
 
 // First working attempt for positive numbers only, O(n * k) (k is number of digits in largest number)
 function radixSort(arr) {
-  // Save input array lenght to reduce property access
+  // Save input array length to reduce property access
   const arrayLength = arr.length;
   // Get highest number of digits present in any one number in input array
   const mostDigitsValue = mostDigits(arr);
-  // Set starting digit place to be sorted (0-indexed)
-  let currentDigit = 0;
+  // Set starting digit place to be sorted (0-indexed from right)
+  let currentPlace = 0;
 
   // Iterate through places, stopping when highest number of digits present reached
-  while (currentDigit < mostDigitsValue) {
+  while (currentPlace < mostDigitsValue) {
     // Reset array write index and number sorting buckets map
     let nextArrayPosition = 0;
     const buckets = new Map();
+    const negativeBuckets = new Map();
 
     // Iterate through array
     for (const number of arr) {
-      // Get digit in the place currently being sorted from the current number
-      const digitToBeSorted = getDigit(number, currentDigit);
-      // Check if digit bucket exists
-      // Create if not, add to if already exists
-      if (!buckets.has(digitToBeSorted)) {
-        buckets.set(digitToBeSorted, [number]);
+      // const numberDigitCount = digitCount(number);
+      // if (
+      //   numberDigitCount <=
+      //   currentPlace - numberDigitCount + mostDigitsValue
+      // ) {
+      if (number >= 0) {
+        // Get digit in the place currently being sorted from the current number
+        const digitToBeSorted = getDigit(number, currentPlace);
+
+        // Check if digit bucket exists
+        // Create if not, add to if already exists
+        if (!buckets.has(digitToBeSorted)) {
+          buckets.set(digitToBeSorted, [number]);
+        } else {
+          buckets.get(digitToBeSorted).push(number);
+        }
       } else {
-        const numbersArray = buckets.get(digitToBeSorted);
-        numbersArray.push(number);
+        // Get digit in the place currently being sorted from the current number
+        const digitToBeSorted = getDigit(number, currentPlace);
+
+        // Check if digit bucket exists
+        // Create if not, add to if already exists
+        if (!negativeBuckets.has(digitToBeSorted)) {
+          negativeBuckets.set(digitToBeSorted, [number]);
+        } else {
+          negativeBuckets.get(digitToBeSorted).push(number);
+        }
+        // }
+      }
+    }
+    for (let i = 9; i >= 0; --i) {
+      // Check if digit bucket exists
+      // Get bucket of numbers if exists
+      if (negativeBuckets.has(i)) {
+        const numbersArray = negativeBuckets.get(i);
+
+        // Write numbers in bucket to array
+        for (const numberValue of numbersArray) {
+          arr[nextArrayPosition] = numberValue;
+          ++nextArrayPosition;
+        }
       }
     }
     // Iterate through all digits
@@ -121,11 +154,64 @@ function radixSort(arr) {
       }
     }
     // Increment place
-    ++currentDigit;
+    ++currentPlace;
   }
   // Return sorted array
   return arr;
 }
+
+// console.log(
+//   radixSort([23098, 213123, 54, 23, 552, 43, -24, -2, -2540395, -6, 0])
+// );
+
+// First working attempt for positive numbers only, O(n * k) (k is number of digits in largest number)
+// function radixSort(arr) {
+//   // Save input array length to reduce property access
+//   const arrayLength = arr.length;
+//   // Get highest number of digits present in any one number in input array
+//   const mostDigitsValue = mostDigits(arr);
+//   // Set starting digit place to be sorted (0-indexed)
+//   let currentPlace = 0;
+
+//   // Iterate through places, stopping when highest number of digits present reached
+//   while (currentPlace < mostDigitsValue) {
+//     // Reset array write index and number sorting buckets map
+//     let nextArrayPosition = 0;
+//     const buckets = new Map();
+
+//     // Iterate through array
+//     for (const number of arr) {
+//       // Get digit in the place currently being sorted from the current number
+//       const digitToBeSorted = getDigit(number, currentPlace);
+//       // Check if digit bucket exists
+//       // Create if not, add to if already exists
+//       if (!buckets.has(digitToBeSorted)) {
+//         buckets.set(digitToBeSorted, [number]);
+//       } else {
+//         const numbersArray = buckets.get(digitToBeSorted);
+//         numbersArray.push(number);
+//       }
+//     }
+//     // Iterate through all digits
+//     for (let i = 0; i <= 9; ++i) {
+//       // Check if digit bucket exists
+//       // Get bucket of numbers if exists
+//       if (buckets.has(i)) {
+//         const numbersArray = buckets.get(i);
+
+//         // Write numbers in bucket to array
+//         for (const numberValue of numbersArray) {
+//           arr[nextArrayPosition] = numberValue;
+//           ++nextArrayPosition;
+//         }
+//       }
+//     }
+//     // Increment place
+//     ++currentPlace;
+//   }
+//   // Return sorted array
+//   return arr;
+// }
 
 module.exports = {
   getDigit: getDigit,

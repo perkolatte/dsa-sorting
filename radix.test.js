@@ -1,4 +1,4 @@
-const { getDigit, digitCount, mostDigits, radixSort } = require("./radix")
+const { getDigit, digitCount, mostDigits, radixSort } = require("./radix");
 
 describe("getDigit", function () {
   it("should exist", function () {
@@ -93,5 +93,26 @@ describe("radixSort", function () {
       "radixSort([902, 4, 7, 408, 29, 9637, 1556, 3556, 8157, 4386, 86, 593]) should equal [4, 7, 29, 86, 408, 593, 902, 1556, 3556, 4386, 8157, 9637]."
     );
     //
+  });
+
+  it("should sort arrays including negatives and zeros", function () {
+    expect(
+      radixSort([23098, 213123, 54, 23, 552, 43, -24, -2, -2540395, -6, 0])
+    ).toEqual(
+      [-2540395, -24, -6, -2, 0, 23, 43, 54, 552, 23098, 213123],
+      "radixSort([23098, 213123, 54, 23, 552, 43, -24, -2, -2540395, -6, 0]) should equal [-2540395, -24, -6, -2, 0, 23, 43, 54, 552, 23098, 213123]."
+    );
+    expect(radixSort([3, 1, 2])).toEqual(
+      [1, 2, 3],
+      "radixSort([3, 1, 2]) should equal [1, 2, 3]."
+    );
+    expect(radixSort([-1, -3, -2])).toEqual(
+      [-3, -2, -1],
+      "radixSort([-1, -3, -2]) should equal [-3, -2, -1]."
+    );
+    expect(radixSort([10, 1, 100, 0])).toEqual(
+      [0, 1, 10, 100],
+      "radixSort([10, 1, 100, 0]) should equal [0, 1, 10, 100]."
+    );
   });
 });
